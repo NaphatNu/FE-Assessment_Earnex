@@ -19,7 +19,7 @@ Run in order. Each phase is self-contained — the executing agent should read *
 git checkout -b phase-01 && cat phases/01.md
 ```
 
-Then hand that file's contents to the OpenRouter coding tier (`ccr code`) — every phase is scoped so no design decisions remain. Gate before every PR:
+See `phases/RUN.md` for the prompt to start a phase. Then hand that file's contents to the OpenRouter coding tier (`ccr code`) — every phase is scoped so no design decisions remain. Gate before every PR:
 
 ```bash
 dart format . && flutter analyze && flutter test
