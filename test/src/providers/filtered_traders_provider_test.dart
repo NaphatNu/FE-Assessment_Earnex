@@ -1,10 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fe_assessment_earnex/models/trader.dart';
-import 'package:fe_assessment_earnex/models/filter_state.dart';
-import 'package:fe_assessment_earnex/providers/traders_provider.dart';
-import 'package:fe_assessment_earnex/providers/applied_filter_provider.dart';
-import 'package:fe_assessment_earnex/providers/filtered_providers.dart';
+import 'package:fe_assessment_earnex/src/domain/trader.dart';
+import 'package:fe_assessment_earnex/src/domain/filter_state.dart';
+import 'package:fe_assessment_earnex/src/providers.dart';
 
 void main() {
   group('filteredTradersProvider', () {
@@ -69,7 +67,7 @@ void main() {
       expect(filteredTraders.value, hasLength(3));
 
       // Apply a filter for "Top Performer" and "Money Maker"
-      container.read(appliedFilterProvider.notifier).applyFrom(
+      container.read(appliedFilterProvider.notifier).apply(
             const FilterState(tags: {'Top Performer', 'Money Maker'}),
           );
 
@@ -128,7 +126,7 @@ void main() {
       expect(count, equals(2));
 
       // Apply a filter that matches only one trader
-      container.read(appliedFilterProvider.notifier).applyFrom(
+      container.read(appliedFilterProvider.notifier).apply(
             const FilterState(tags: {'Top Performer'}),
           );
 

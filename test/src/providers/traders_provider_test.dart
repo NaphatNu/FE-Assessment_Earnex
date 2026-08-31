@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fe_assessment_earnex/providers/traders_provider.dart';
+import 'package:fe_assessment_earnex/src/providers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

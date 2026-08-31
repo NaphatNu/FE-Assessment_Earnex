@@ -1,4 +1,4 @@
-import 'package:fe_assessment_earnex/models/trader.dart';
+import 'package:fe_assessment_earnex/src/domain/trader.dart';
 
 class FilterState {
   const FilterState({this.tags = const {}});
@@ -6,8 +6,8 @@ class FilterState {
   final Set<String> tags;
 
   bool get isEmpty => tags.isEmpty;
-
-  bool matches(Trader t) => tags.isEmpty || t.tags.any(tags.contains);
+  bool matches(Trader t) =>
+      tags.isEmpty || t.tags.any(tags.contains); // OR within group
 
   FilterState copyWith({Set<String>? tags}) =>
       FilterState(tags: tags ?? this.tags);

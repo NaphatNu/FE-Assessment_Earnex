@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fe_assessment_earnex/models/filter_state.dart';
-import 'package:fe_assessment_earnex/models/trader.dart';
+import 'package:fe_assessment_earnex/src/domain/filter_state.dart';
+import 'package:fe_assessment_earnex/src/domain/trader.dart';
 
 void main() {
   group('FilterState', () {
