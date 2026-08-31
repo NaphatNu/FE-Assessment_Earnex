@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fe_assessment_earnex/src/ui/portfolio_list_page.dart';
 
 void main() {
   runApp(
@@ -14,11 +15,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Trader Portfolio List with Filter'),
-        ),
+    return MaterialApp(
+      title: 'Earnex',
+      home: const PortfolioListPage(),
+      theme: ThemeData(
+        fontFamily: 'Inter',
       ),
     );
   }
