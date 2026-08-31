@@ -9,8 +9,9 @@ Run in order. Each phase is self-contained — the executing agent should read *
 | 01 | Data layer — model, mock asset, repository | — |
 | 02 | State layer — FilterState + 5 providers | 01 |
 | 03 | State layer tests | 02 |
-| 04 | Portfolio list UI | 02 |
-| 05 | Filter bottom sheet (decoupled) | 02, 04 |
+| 03.5 | Ground UI in real Figma file (Figwright, not delegable) | 01 |
+| 04 | Portfolio list UI | 02, 03.5 |
+| 05 | Filter bottom sheet (decoupled) | 02, 04, 03.5 |
 | 06 | UI states and README | 04, 05 |
 
 ## How to run one phase
@@ -19,7 +20,7 @@ Run in order. Each phase is self-contained — the executing agent should read *
 git checkout -b phase-01 && cat phases/01.md
 ```
 
-See `phases/RUN.md` for the prompt to start a phase. Then hand that file's contents to the OpenRouter coding tier (`ccr code`) — every phase is scoped so no design decisions remain. Gate before every PR:
+See `phases/RUN.md` for the prompt to start a phase. Then hand that file's contents to the OpenRouter coding tier (`ccr code`) — every phase is scoped so no design decisions remain, **except phase 03.5, which needs live Figma MCP access and must be run directly by Claude, not delegated**. Gate before every PR:
 
 ```bash
 dart format . && flutter analyze && flutter test

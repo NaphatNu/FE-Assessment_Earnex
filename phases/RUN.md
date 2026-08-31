@@ -1,6 +1,13 @@
 # Start prompt (paste into a fresh Claude Code session)
 
-Replace `NN` with the phase number. Run phases in order: 01 → 02 → 03 → 04 → 05 → 06.
+Replace `NN` with the phase number. Run phases in order: 01 → 02 → 03 → 03.5 → 04 → 05 → 06.
+
+**Phase 03.5 is different: do not delegate it.** It needs live Figma MCP tool access
+(Figwright) that only this Claude Code session has. For 03.5, skip step 2 below and
+instead follow `phases/03.5.md` directly — load the `figma-design-to-code` skill
+first, confirm Figwright is connected with `ping` before doing anything else, and
+write the output to `docs/05-figma-extraction.md`. Everything else in the procedure
+(branch, gate, PR, report, stop) still applies.
 
 ```
 Run phase NN.
@@ -34,6 +41,7 @@ me. Do not invent a design decision.
 | 01 | `Run phase 01.` … (rest of the block above) |
 | 02 | `Run phase 02.` |
 | 03 | `Run phase 03.` |
+| 03.5 | `Run phase 03.5.` — figma-grounding, not delegated, see note above |
 | 04 | `Run phase 04.` |
 | 05 | `Run phase 05.` |
 | 06 | `Run phase 06.` |
