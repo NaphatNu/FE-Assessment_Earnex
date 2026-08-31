@@ -1,8 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fe_assessment_earnex/models/filter_state.dart';
-import 'package:fe_assessment_earnex/providers/applied_filter_provider.dart';
-import 'package:fe_assessment_earnex/providers/draft_filter_provider.dart';
+import 'package:fe_assessment_earnex/src/domain/filter_state.dart';
+import 'package:fe_assessment_earnex/src/providers.dart';
 
 void main() {
   group('draftFilterProvider', () {
@@ -12,7 +11,7 @@ void main() {
       addTearDown(container.dispose);
 
       // Set initial applied filter
-      container.read(appliedFilterProvider.notifier).applyFrom(
+      container.read(appliedFilterProvider.notifier).apply(
             const FilterState(tags: {'Top Performer'}),
           );
 
@@ -47,7 +46,7 @@ void main() {
       addTearDown(container.dispose);
 
       // Set initial applied filter
-      container.read(appliedFilterProvider.notifier).applyFrom(
+      container.read(appliedFilterProvider.notifier).apply(
             const FilterState(tags: {'Top Performer'}),
           );
 
