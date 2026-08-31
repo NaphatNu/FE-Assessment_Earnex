@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fe_assessment_earnex/src/providers.dart';
 
+import 'package:fe_assessment_earnex/src/ui/filter/filter_bottom_sheet.dart';
+
 /// A filter icon with a badge showing the filtered count.
 class FilterIconWithBadge extends ConsumerWidget {
   const FilterIconWithBadge({super.key});
@@ -29,7 +31,7 @@ class FilterIconWithBadge extends ConsumerWidget {
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
-                builder: (_) => const SizedBox.shrink(),
+                builder: (_) => const FilterBottomSheet(),
               );
             },
           ),
