@@ -130,7 +130,7 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        TraderAvatar(url: trader.avatarUrl),
+        TraderAvatar(url: trader.avatarUrl, name: trader.name),
         const SizedBox(width: AppSpacing.x12),
         Expanded(
           child: Column(
@@ -205,7 +205,7 @@ class _PnlBlock extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.x2),
               Text(
-                Format.money(trader.pnl30d),
+                formatMoney(trader.pnl30d),
                 style: AppText.bold20.copyWith(color: accent),
               ),
               const SizedBox(height: AppSpacing.x2),
@@ -218,7 +218,7 @@ class _PnlBlock extends StatelessWidget {
                   ),
                   const SizedBox(width: AppSpacing.x4),
                   Text(
-                    Format.percent(trader.roi),
+                    formatPercent(trader.roi),
                     style: AppText.medium12.copyWith(color: accent),
                   ),
                 ],
@@ -247,13 +247,13 @@ class _StatsRow extends StatelessWidget {
         Expanded(
           child: MetricCell(
             label: 'AUM',
-            value: Format.money(trader.aum),
+            value: formatMoney(trader.aum),
           ),
         ),
         Expanded(
           child: MetricCell(
             label: '30 Days MDD',
-            value: Format.percent(trader.mdd30d),
+            value: formatPercent(trader.mdd30d),
           ),
         ),
         Expanded(

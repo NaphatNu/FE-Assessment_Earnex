@@ -9,10 +9,12 @@ class TraderAvatar extends StatelessWidget {
   const TraderAvatar({
     super.key,
     required this.url,
+    required this.name,
     this.size = 44,
   });
 
   final String url;
+  final String name;
   final double size;
 
   @override
@@ -35,9 +37,11 @@ class TraderAvatar extends StatelessWidget {
                 width: size,
                 height: size,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => _fallback(),
-                loadingBuilder: (context, child, progress) =>
-                    progress == null ? child : _fallback(),
+                errorBuilder: (_, __, ___) =>
+                    AvatarFallback(name: name, size: size),
+                loadingBuilder: (context, child, progress) => progress == null
+                    ? child
+                    : AvatarFallback(name: name, size: size),
               ),
             ),
           ),
@@ -54,10 +58,34 @@ class TraderAvatar extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _fallback() => Container(
+/// Shown in place of the avatar image while it loads and when it fails —
+/// the trader's first character on the brand circle.
+class AvatarFallback extends StatelessWidget {
+  const AvatarFallback({super.key, required this.name, required this.size});
+
+  final String name;
+  final double size;
+
+  String get _initial {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) return '?';
+    return String.fromCharCode(trimmed.runes.first).toUpperCase();
+  }
+
+  @override
+  Widget build(BuildContext context) => Container(
         width: size,
         height: size,
-        color: AppColors.bgBrand,
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          color: AppColors.bgBrand,
+          shape: BoxShape.circle,
+        ),
+        child: Text(
+          _initial,
+          style: AppText.semiBold16.copyWith(color: AppColors.textPrimary),
+        ),
       );
 }

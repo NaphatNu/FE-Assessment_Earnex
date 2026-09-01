@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fe_assessment_earnex/features/portfolio/presentation/portfolio_providers.dart';
 import 'package:fe_assessment_earnex/features/portfolio/presentation/filter/filter_bottom_sheet.dart';
+import 'package:fe_assessment_earnex/features/portfolio/presentation/format.dart';
 import 'package:fe_assessment_earnex/theme/tokens.dart';
 
 /// The 40x40 filter button with a badge showing how many traders currently
@@ -13,7 +14,7 @@ class FilterIconWithBadge extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final count = ref.watch(filteredCountProvider);
+    final label = badgeLabel(ref.watch(filteredCountProvider));
 
     return GestureDetector(
       onTap: () => _openSheet(context),
@@ -31,7 +32,7 @@ class FilterIconWithBadge extends ConsumerWidget {
             ),
             child: Image.asset(AppIcons.filterList, width: 24, height: 24),
           ),
-          if (count != null)
+          if (label != null)
             Positioned(
               right: -4,
               top: -6,
@@ -45,7 +46,7 @@ class FilterIconWithBadge extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(AppRadius.full),
                 ),
                 child: Text(
-                  '$count',
+                  label,
                   style: AppText.semiBold12.copyWith(
                     fontSize: 10,
                     height: 1,
