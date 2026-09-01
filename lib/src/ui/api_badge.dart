@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fe_assessment_earnex/src/ui/theme/tokens.dart';
 
-/// A small "API" text badge.
+/// The small "API" label shown next to the copier count.
+///
+/// Mirrors Figma node 21:5007.
 class ApiBadge extends StatelessWidget {
   const ApiBadge({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'API',
-      style: const TextStyle(
-        fontFamily: 'Inter',
-        fontWeight: FontWeight.w500, // Medium
-        fontSize: 14,
-        height: 20 / 14,
-        color: Color(0xFF1E2329),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.x4),
+      child: Text(
+        'API',
+        style: AppText.regular12.copyWith(color: AppColors.textPrimary),
       ),
     );
   }

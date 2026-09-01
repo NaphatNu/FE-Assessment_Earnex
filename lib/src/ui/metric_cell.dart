@@ -1,42 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:fe_assessment_earnex/src/ui/theme/tokens.dart';
 
-/// A simple metric display cell with a label and value.
+/// A label-over-value cell used by the three-column stats row on the card.
+///
+/// Mirrors Figma node 21:4663.
 class MetricCell extends StatelessWidget {
-  final String label;
-  final String value;
-  final Color? valueColor;
-
   const MetricCell({
     super.key,
     required this.label,
     required this.value,
     this.valueColor,
+    this.alignment = CrossAxisAlignment.start,
   });
+
+  final String label;
+  final String value;
+  final Color? valueColor;
+
+  /// The right-most column is right-aligned in the design.
+  final CrossAxisAlignment alignment;
 
   @override
   Widget build(BuildContext context) {
+    final textAlign = alignment == CrossAxisAlignment.end
+        ? TextAlign.right
+        : TextAlign.left;
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: alignment,
       children: [
         Text(
           label,
-          style: const TextStyle(
-            fontFamily: 'Inter',
-            fontWeight: FontWeight.w400, // Regular
-            fontSize: 12,
-            height: 16 / 12,
-            color: Color(0xFF707A8A),
-          ),
+          textAlign: textAlign,
+          maxLines: 1,
+          overflow: TextOverflow.visible,
+          softWrap: false,
+          style: AppText.regular12.copyWith(color: AppColors.textSecondary),
         ),
-        const SizedBox(height: 4),
         Text(
           value,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontWeight: FontWeight.w500, // Medium
-            fontSize: 12,
-            height: 16 / 12,
-            color: valueColor ?? const Color(0xFF1E2329),
+          textAlign: textAlign,
+          style: AppText.medium12.copyWith(
+            color: valueColor ?? AppColors.textPrimary,
           ),
         ),
       ],
