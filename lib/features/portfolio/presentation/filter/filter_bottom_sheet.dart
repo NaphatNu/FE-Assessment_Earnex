@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fe_assessment_earnex/features/portfolio/presentation/filter/sheet_actions.dart';
 import 'package:fe_assessment_earnex/features/portfolio/presentation/filter/tag_chip.dart';
@@ -9,9 +10,11 @@ import 'package:fe_assessment_earnex/theme/tokens.dart';
 
 /// The "Advanced Filters" sheet.
 ///
-/// Mirrors Figma `UI 1 / Frame 23` (node 22:7051). Every control in the
-/// design is drawn; only **Tags** is wired to state, per the brief. The sheet
-/// takes zero filter data through its constructor — hence `const`.
+/// Mirrors Figma `UI 1 / Frame 23` (node 22:7051). **Tags** is wired to
+/// `draftFilterProvider`, per the brief. The PnL range, ROI chips, and API
+/// switch are interactive (draggable/typable/tappable) but keep their own
+/// local widget state rather than feeding a provider. The sheet takes zero
+/// filter data through its constructor — hence `const`.
 class FilterBottomSheet extends ConsumerWidget {
   const FilterBottomSheet({super.key});
 
@@ -123,47 +126,142 @@ class _Section extends StatelessWidget {
   }
 }
 
-/// The two read-only amount fields and the range slider beneath them.
-///
-/// Drawn to match the design; not wired to state (see docs/03-ui-and-figma).
-class _PnlRange extends StatelessWidget {
+/// The two editable amount fields and the draggable range slider beneath
+/// them. Interactive, but keeps its own local state — see the class doc on
+/// [FilterBottomSheet] for why it isn't wired to a provider.
+class _PnlRange extends StatefulWidget {
   const _PnlRange();
+
+  @override
+  State<_PnlRange> createState() => _PnlRangeState();
+}
+
+class _PnlRangeState extends State<_PnlRange> {
+  static const double _min = 0;
+  static const double _max = 500000;
+  static const double _handleSize = 16;
+
+  double _lower = _min;
+  double _upper = _max;
+
+  late final _lowerCtrl = TextEditingController(text: _format(_lower));
+  late final _upperCtrl = TextEditingController(text: _format(_upper));
+
+  static String _format(double v) => v.round().toString();
+
+  @override
+  void dispose() {
+    _lowerCtrl.dispose();
+    _upperCtrl.dispose();
+    super.dispose();
+  }
+
+  void _commitLower(String text) {
+    final parsed = double.tryParse(text);
+    setState(() {
+      _lower = parsed == null ? _lower : parsed.clamp(_min, _upper);
+      _lowerCtrl.text = _format(_lower);
+    });
+  }
+
+  void _commitUpper(String text) {
+    final parsed = double.tryParse(text);
+    setState(() {
+      _upper = parsed == null ? _upper : parsed.clamp(_lower, _max);
+      _upperCtrl.text = _format(_upper);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Row(
+        Row(
           children: [
-            Expanded(child: _AmountField('0')),
-            SizedBox(width: AppSpacing.x4),
-            Text('-'),
-            SizedBox(width: AppSpacing.x4),
-            Expanded(child: _AmountField('500000')),
+            Expanded(
+              child: _AmountField(
+                controller: _lowerCtrl,
+                onSubmitted: _commitLower,
+              ),
+            ),
+            const SizedBox(width: AppSpacing.x4),
+            const Text('-'),
+            const SizedBox(width: AppSpacing.x4),
+            Expanded(
+              child: _AmountField(
+                controller: _upperCtrl,
+                onSubmitted: _commitUpper,
+              ),
+            ),
           ],
         ),
         const SizedBox(height: AppSpacing.x12),
         SizedBox(
           height: 16,
           child: LayoutBuilder(
-            builder: (context, constraints) => Stack(
-              children: [
-                Positioned(
-                  left: 8,
-                  right: 8,
-                  top: 7,
-                  child: Container(
-                    height: 2,
-                    decoration: BoxDecoration(
-                      color: AppColors.borderStrong,
-                      borderRadius: BorderRadius.circular(AppRadius.full),
+            builder: (context, constraints) {
+              final trackWidth = constraints.maxWidth - _handleSize;
+              final lowerX = (_lower / _max) * trackWidth;
+              final upperX = (_upper / _max) * trackWidth;
+
+              void dragLower(double dx) {
+                setState(() {
+                  final frac = ((lowerX + dx) / trackWidth).clamp(0.0, 1.0);
+                  _lower = (frac * _max).clamp(_min, _upper);
+                  _lowerCtrl.text = _format(_lower);
+                });
+              }
+
+              void dragUpper(double dx) {
+                setState(() {
+                  final frac = ((upperX + dx) / trackWidth).clamp(0.0, 1.0);
+                  _upper = (frac * _max).clamp(_lower, _max);
+                  _upperCtrl.text = _format(_upper);
+                });
+              }
+
+              return Stack(
+                children: [
+                  Positioned(
+                    left: 8,
+                    right: 8,
+                    top: 7,
+                    child: Container(
+                      height: 2,
+                      decoration: BoxDecoration(
+                        color: AppColors.borderStrong,
+                        borderRadius: BorderRadius.circular(AppRadius.full),
+                      ),
                     ),
                   ),
-                ),
-                const Positioned(left: 0, child: _SliderHandle()),
-                const Positioned(right: 0, child: _SliderHandle()),
-              ],
-            ),
+                  Positioned(
+                    left: lowerX + 8,
+                    right: constraints.maxWidth - upperX - 8,
+                    top: 7,
+                    child: Container(
+                      height: 2,
+                      color: AppColors.bgBrand,
+                    ),
+                  ),
+                  Positioned(
+                    left: lowerX,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onHorizontalDragUpdate: (d) => dragLower(d.delta.dx),
+                      child: const _SliderHandle(),
+                    ),
+                  ),
+                  Positioned(
+                    left: upperX,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onHorizontalDragUpdate: (d) => dragUpper(d.delta.dx),
+                      child: const _SliderHandle(),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ],
@@ -171,10 +269,32 @@ class _PnlRange extends StatelessWidget {
   }
 }
 
-class _AmountField extends StatelessWidget {
-  const _AmountField(this.value);
+class _AmountField extends StatefulWidget {
+  const _AmountField({required this.controller, required this.onSubmitted});
 
-  final String value;
+  final TextEditingController controller;
+  final ValueChanged<String> onSubmitted;
+
+  @override
+  State<_AmountField> createState() => _AmountFieldState();
+}
+
+class _AmountFieldState extends State<_AmountField> {
+  final _focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) widget.onSubmitted(widget.controller.text);
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,9 +306,19 @@ class _AmountField extends StatelessWidget {
         color: AppColors.bgSecondary,
         borderRadius: BorderRadius.circular(AppRadius.md),
       ),
-      child: Text(
-        value,
+      child: TextField(
+        controller: widget.controller,
+        focusNode: _focusNode,
+        textAlign: TextAlign.center,
+        keyboardType: TextInputType.number,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         style: AppText.semiBold14.copyWith(color: AppColors.textPrimary),
+        decoration: const InputDecoration(
+          isCollapsed: true,
+          border: InputBorder.none,
+        ),
+        onSubmitted: widget.onSubmitted,
+        onTapOutside: (_) => FocusScope.of(context).unfocus(),
       ),
     );
   }
@@ -210,26 +340,48 @@ class _SliderHandle extends StatelessWidget {
   }
 }
 
-/// Four ROI threshold chips. Drawn to match the design; not wired to state.
-class _RoiChips extends StatelessWidget {
+/// Four ROI threshold chips, single-select (tap again to clear). Keeps its
+/// own local state — see the class doc on [FilterBottomSheet].
+class _RoiChips extends StatefulWidget {
   const _RoiChips();
 
   @override
+  State<_RoiChips> createState() => _RoiChipsState();
+}
+
+class _RoiChipsState extends State<_RoiChips> {
+  static const _labels = ['≥0%', '≥25%', '≥50%', '≥100%'];
+
+  int? _selected;
+
+  @override
   Widget build(BuildContext context) {
-    return const ChipGrid(
+    return ChipGrid(
       chips: [
-        TagChip(label: '≥0%', selected: false),
-        TagChip(label: '≥25%', selected: false),
-        TagChip(label: '≥50%', selected: false),
-        TagChip(label: '≥100%', selected: false),
+        for (var i = 0; i < _labels.length; i++)
+          TagChip(
+            label: _labels[i],
+            selected: _selected == i,
+            onTap: () => setState(() {
+              _selected = _selected == i ? null : i;
+            }),
+          ),
       ],
     );
   }
 }
 
-/// The API row with an iOS-style switch. Drawn to match the design; not wired.
-class _ApiToggleRow extends StatelessWidget {
+/// The API row with an iOS-style switch, grey when off and green when on.
+/// Keeps its own local state — see the class doc on [FilterBottomSheet].
+class _ApiToggleRow extends StatefulWidget {
   const _ApiToggleRow();
+
+  @override
+  State<_ApiToggleRow> createState() => _ApiToggleRowState();
+}
+
+class _ApiToggleRowState extends State<_ApiToggleRow> {
+  bool _enabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -242,21 +394,28 @@ class _ApiToggleRow extends StatelessWidget {
             'API',
             style: AppText.medium14.copyWith(color: AppColors.textPrimary),
           ),
-          Container(
-            width: 64,
-            height: 28,
-            padding: const EdgeInsets.all(2),
-            alignment: Alignment.centerLeft,
-            decoration: BoxDecoration(
-              color: const Color(0x4D3C3C43),
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: Container(
-              width: 39,
-              height: 24,
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => setState(() => _enabled = !_enabled),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              curve: Curves.easeInOut,
+              width: 64,
+              height: 28,
+              padding: const EdgeInsets.all(2),
+              alignment:
+                  _enabled ? Alignment.centerRight : Alignment.centerLeft,
               decoration: BoxDecoration(
-                color: AppColors.white,
+                color: _enabled ? AppColors.green500 : const Color(0x4D3C3C43),
                 borderRadius: BorderRadius.circular(100),
+              ),
+              child: Container(
+                width: 39,
+                height: 24,
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(100),
+                ),
               ),
             ),
           ),
