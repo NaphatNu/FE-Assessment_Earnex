@@ -26,14 +26,24 @@ described the code. These phases close that list.
 Phase 07 moves every file the UI work touches; in the other order every UI file conflicts as
 rename-vs-modify.
 
-| # | Phase | Depends on | Tier |
-|---|---|---|---|
-| 07 | Restructure `lib/src/` to feature-first | UI branch merged | coding |
-| 08 | Data layer: conform to the phase-01 contract | 07 | coding |
-| 09 | `99+` badge, avatar initials, format helpers | 07, 08 | coding |
-| 10 | Finish the token migration in `widgets/states/` | 07 | cheap |
-| 11 | Reconcile the documents with what was built | 07–10 | cheap |
-| 12 | Convention cleanup (optional) | 07–11 | cheap |
+| # | Phase | Depends on | Tier | Execution |
+|---|---|---|---|---|
+| 07 | Restructure `lib/src/` to feature-first | UI branch merged | coding | `openrouter-agent` skill |
+| 08 | Data layer: conform to the phase-01 contract | 07 | coding | **Claude direct** |
+| 09 | `99+` badge, avatar initials, format helpers | 07, 08 | coding | **Claude direct** |
+| 10 | Finish the token migration in `widgets/states/` | 07 | cheap | `openrouter-agent` skill |
+| 11 | Reconcile the documents with what was built | 07–10 | cheap | `openrouter-agent` skill |
+| 12 | Convention cleanup (optional) | 07–11 | cheap | `openrouter-agent` skill |
+
+**Execution split.** Phases 08 and 09 edit the data contract, the invariant tests, and a
+couple of one-off-error-prone edge cases (`runes.first`, the `badgeLabel` `99`/`100` boundary) —
+Claude writes those directly rather than delegating: judgment-bearing or correctness-critical
+work is cheap for Claude to get right and expensive to verify after the fact if delegated.
+Phases 07, 10, 11 and 12 are pinned closely enough that there is no design decision left — file
+moves, a substitution table, verbatim text, a handful of small independent edits — so they go
+through the `openrouter-agent` skill (`ccr code`) to save Claude's token budget for the phases
+that need it. Each phase file states its own execution mode at the top; that statement is
+authoritative over this table if the two ever disagree.
 
 Phase 07 runs alone. 08, 09 and 10 touch disjoint files and may run in parallel afterwards —
 though 09 reads field names that 08 renames, so merge 08 first if you run them one at a time.
