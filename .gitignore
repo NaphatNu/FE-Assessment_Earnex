@@ -45,7 +45,11 @@ app.*.map.json
 /android/app/release
 
 # AI workspace (local only, not part of submission)
+# The long-form design notes and phase work orders live in .ai/docs and
+# .ai/phases; the submission is README.md alone.
 .ai/
+docs/
+phases/
 CLAUDE.md
 .claude/
 .agents/
