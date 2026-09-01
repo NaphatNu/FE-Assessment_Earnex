@@ -203,7 +203,7 @@ class FilterState {
 
 | pattern | ทำไมไม่เลือก |
 |---|---|
-| `StateNotifier` | ถูก deprecate ใน Riverpod 3 แล้ว |
+| `StateNotifier` | เป็น legacy ใน Riverpod 2.x และถูกลบออกจาก surface ที่แนะนำใน 3.x โปรเจกต์นี้ตั้งใจอยู่ที่ 2.6.1 เพราะการ migrate ไป 3.x จะเปลี่ยน API ของ `AutoDisposeNotifier` ที่ `draftFilterProvider` ใช้อยู่ ซึ่งไม่คุ้มค่าในการทำภายใน assessment |
 | `AsyncNotifier` | filter state ไม่มีงาน async — การใช้จะบังคับให้ทุกที่ต้อง unwrap `AsyncValue` โดยไม่ได้อะไรกลับมา |
 | `StateProvider` | เขียนสั้นกว่าก็จริง แต่ไม่มีที่ให้วางเมธอด `toggle` / `reset` / `applyFrom` ทำให้ตรรกะไปกระจายอยู่ใน widget ซึ่งขัดกับที่โจทย์ขอ |
 

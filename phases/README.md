@@ -60,6 +60,28 @@ dart format . && flutter analyze && flutter test
 - Hand-written Riverpod. No `riverpod_generator`, no `build_runner`.
 - No `late`, no `!`, no `dynamic` in production code.
 - Filtering logic lives only in `FilterState.matches` — never inside a widget.
-- Only `TraderList`, `FilterIconWithBadge` and `TagChipGroup` may `watch` a provider.
+- Only `TraderList`, `FilterIconWithBadge`, `TagChipGroup` and `SheetActions` may `watch` a
+  provider. `SheetActions` watches `draftFilterProvider` because the Figma footer spec makes
+  `Reset` disabled until the draft is non-empty. Every other widget takes plain constructor
+  params.
 - `FilterBottomSheet` must stay constructible as `const FilterBottomSheet()`.
 - Do not edit files outside the phase's stated scope.
+
+## Corrections after phases 01-06
+
+1. Layout. `lib/src/...` (a package convention, wrong for an app) was replaced by feature-first
+   in phase 07. Path map: `lib/src/data/` -> `lib/data/`; `lib/src/domain/` ->
+   `lib/features/portfolio/domain/`; `lib/src/providers.dart` ->
+   `lib/features/portfolio/presentation/portfolio_providers.dart`; `lib/src/ui/theme/tokens.dart`
+   -> `lib/theme/tokens.dart`; the rest of `lib/src/ui/` ->
+   `lib/features/portfolio/presentation/{,widgets/,widgets/states/,filter/}`. `test/` mirrors
+   `lib/`, shared fakes in `test/support/`.
+2. Tag vocabulary. Phase 01 named 5 tags. Phase 03.5 read the real Figma file and found 7 chips,
+   and the data carries an 8th (`High Risk`) with no chip. The 8 tags in
+   `assets/mock/traders.json` are authoritative; the 5-tag list in phase 01 is superseded.
+3. Field names. Phase 08 restored the phase-01 spelling (`isApi`, `copiers`, `copiersMax`, `roi`,
+   `sharpe`) and the asset path `assets/mock/traders.json`.
+4. `mocktail` was not added (phase 01 listed it). The suite fakes the repository and the asset
+   bundle by hand, so the package would be an unused dependency.
+5. Test file names. Phase 03 asked for `test/filter_state_test.dart` and `test/providers_test.dart`;
+   the suite is instead split per provider and mirrors `lib/`.

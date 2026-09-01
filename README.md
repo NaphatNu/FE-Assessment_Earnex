@@ -33,6 +33,10 @@ no widget contains filtering logic itself.
 | `filteredTradersProvider` | `Provider<AsyncValue<List<Trader>>>` | derived | Combines `tradersProvider` and `appliedFilterProvider` into the list the UI renders |
 | `filteredCountProvider` | `Provider<int?>` | derived | Feeds the badge on the filter icon; `null` while loading |
 
+A sixth provider, `tradersRepositoryProvider`, exists purely as
+the injection seam the tests override; it holds no state, which is why the design doc counts
+five.
+
 ## How the bottom sheet stays decoupled
 
 `FilterBottomSheet` has a `const` constructor with no fields other than `key`
@@ -84,6 +88,10 @@ reasoning; in short:
    numbers: with the given mock data, AND across 3 selected tags leaves at
    most 1 trader out of 18 in almost every combination, which makes the
    filter unusable. OR (any selected tag matches) was chosen instead.
+6. **`High Risk` exists in the data but has no chip in the design.** Two of the eighteen traders
+   carry it; the Figma Tags section has exactly seven chips and none of them is `High Risk`
+   (confirmed against the live file in `docs/05-figma-extraction.md`). No chip was invented for
+   it — the data is allowed to be richer than the filter UI.
 
 ## Tests
 
@@ -94,4 +102,6 @@ flutter test
 Covers: `FilterState` matching logic, all 5 providers (including the
 draft/applied separation and `autoDispose` discard-on-close behavior), the
 mock data's tag-distribution invariants, the filter bottom sheet's full
-interaction flow, and the trader list's loading/error/empty UI states.
+interaction flow, and the trader list's loading/error/empty UI states,
+the repository's injected-AssetBundle seam and its malformed-JSON
+path, the `badgeLabel` `99+` rule, and the avatar's initial-letter fallback.

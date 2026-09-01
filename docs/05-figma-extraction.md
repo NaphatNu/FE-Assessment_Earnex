@@ -81,8 +81,8 @@ Type styles used (family always `Inter`):
   value (Medium 12/16, `text/primary`, right-aligned for the third column). **This
   confirms deviation ① in `docs/03-ui-and-figma.md`: the design's third column is
   literally "Days Leading Trading" with no Sharpe Ratio field anywhere in this
-  card.** `lib/src/domain/trader.dart` has `sharpeRatio` and no
-  `daysLeadingTrading`/leading-trading field, and `assets/data/mock_data.json` has
+  card.** `lib/features/portfolio/domain/trader.dart` has `sharpeRatio` and no
+  `daysLeadingTrading`/leading-trading field, and `assets/mock/traders.json` has
   no such values either — the deviation still holds exactly as documented: keep
   the design's 3-column layout, replace the third column's label/value with
   Sharpe Ratio, drop Days Leading Trading entirely.
@@ -220,6 +220,6 @@ hold exactly as documented**:
 
 `lib/src/ui/` does not exist yet (phase 04/05 have not run) — there is no
 existing Flutter widget code to cross-reference against `component_map`/
-`token_map`/`icon_map` yet. The token table above is the reuse surface phase
+`token_map`/`icon_map` yet. [Note: This was true when the file was written. This code now lives in `lib/features/portfolio/presentation/` with the token table implemented in `lib/theme/tokens.dart`.] The token table above is the reuse surface phase
 04/05 should build against (map each hex/spacing value to a Dart
 `ThemeExtension`/constant using these names, not raw literals).
