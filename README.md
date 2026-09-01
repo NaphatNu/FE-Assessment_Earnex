@@ -69,7 +69,17 @@ reasoning; in short:
    range, the 7D ROI chips, and the API toggle render exactly as designed but
    have no `onChanged`/provider behind them. Only the **Tags** section is
    live, since that's the only filter dimension the task scope covers.
-3. **Selecting multiple tags is OR, not AND.** See
+3. **The card sparkline is illustrative, not data.** The design puts a 92x48
+   performance chart beside the PNL figure; the mock data carries no time
+   series to plot. `Sparkline` therefore draws a bounded random walk seeded
+   from the trader id (so a given trader always draws the same curve) and
+   tinted by the sign of their PNL. No fabricated number is ever shown as
+   text.
+4. **The card's background glow is a radial fade, not a 200px blur.** Figma
+   builds the card wash from a gold ellipse under a 200px layer blur. Blurring
+   at that radius once per card is a real cost in a scrolling list, so the
+   ellipse is drawn as an equivalent `RadialGradient`.
+5. **Selecting multiple tags is OR, not AND.** See
    [`docs/04-data-and-ui-states.md`](docs/04-data-and-ui-states.md) for the
    numbers: with the given mock data, AND across 3 selected tags leaves at
    most 1 trader out of 18 in almost every combination, which makes the
