@@ -24,15 +24,15 @@ void main() {
       expect(firstTrader?.id, 't001');
       expect(firstTrader?.name, 'CRYPTO 加密');
       expect(firstTrader?.avatarUrl, 'https://i.pravatar.cc/150?img=1');
-      expect(firstTrader?.copierCount, 0);
-      expect(firstTrader?.copierLimit, 300);
-      expect(firstTrader?.isAPI, isTrue);
+      expect(firstTrader?.copiers, 0);
+      expect(firstTrader?.copiersMax, 300);
+      expect(firstTrader?.isApi, isTrue);
       expect(firstTrader?.tags, containsAll(['Top Performer', 'Money Maker']));
       expect(firstTrader?.pnl30d, 56592.5);
-      expect(firstTrader?.roi30d, 17.07);
+      expect(firstTrader?.roi, 17.07);
       expect(firstTrader?.aum, 388038.47);
       expect(firstTrader?.mdd30d, 2.54);
-      expect(firstTrader?.sharpeRatio, 2.15);
+      expect(firstTrader?.sharpe, 2.15);
     });
   });
 }

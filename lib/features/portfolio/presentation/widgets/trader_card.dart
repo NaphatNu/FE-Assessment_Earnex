@@ -159,7 +159,7 @@ class _Header extends StatelessWidget {
                         Image.asset(AppIcons.users12, width: 12, height: 12),
                         const SizedBox(width: AppSpacing.x2),
                         Text(
-                          '${trader.copierCount} / ${trader.copierLimit}',
+                          '${trader.copiers} / ${trader.copiersMax}',
                           style: AppText.regular12.copyWith(
                             color: AppColors.textPrimary,
                           ),
@@ -167,7 +167,7 @@ class _Header extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (trader.isAPI) ...[
+                  if (trader.isApi) ...[
                     const SizedBox(width: AppSpacing.x4),
                     const ApiBadge(),
                   ],
@@ -218,7 +218,7 @@ class _PnlBlock extends StatelessWidget {
                   ),
                   const SizedBox(width: AppSpacing.x4),
                   Text(
-                    Format.percent(trader.roi30d),
+                    Format.percent(trader.roi),
                     style: AppText.medium12.copyWith(color: accent),
                   ),
                 ],
@@ -259,7 +259,7 @@ class _StatsRow extends StatelessWidget {
         Expanded(
           child: MetricCell(
             label: 'Sharpe Ratio',
-            value: trader.sharpeRatio.toStringAsFixed(2),
+            value: trader.sharpe.toStringAsFixed(2),
             alignment: CrossAxisAlignment.end,
           ),
         ),
