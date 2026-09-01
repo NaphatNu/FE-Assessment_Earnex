@@ -84,7 +84,7 @@ class _SheetHeader extends StatelessWidget {
               width: 36,
               height: 5,
               decoration: BoxDecoration(
-                color: const Color(0xFFCCCCCC),
+                color: AppColors.sheetGrabber,
                 borderRadius: BorderRadius.circular(100),
               ),
             ),

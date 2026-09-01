@@ -63,6 +63,9 @@ class AppColors {
 
   /// The blurred gold ellipse layered over the card wash.
   static const cardGlow = Color(0xFFD89F00);
+
+  /// The drag-handle pill at the top of a bottom sheet — Figma `Frame 22`.
+  static const sheetGrabber = Color(0xFFCCCCCC);
 }
 
 /// Spacing scale — Figma `spacing/*`.
