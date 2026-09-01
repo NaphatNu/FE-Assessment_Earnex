@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fe_assessment_earnex/theme/tokens.dart';
 
 /// A static grey placeholder shaped like a trader card, shown while
 /// the trader list is loading.
@@ -11,10 +12,10 @@ class SkeletonCard extends StatelessWidget {
       height: 250,
       width: double.infinity,
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppColors.bgPrimary,
         borderRadius: BorderRadius.all(Radius.circular(8)),
         border: Border(
-          bottom: BorderSide(color: Color(0xFFEAECEF), width: 1),
+          bottom: BorderSide(color: AppColors.borderDefault, width: 1),
         ),
       ),
       padding: const EdgeInsets.fromLTRB(15, 17.5, 15, 16),
@@ -61,7 +62,7 @@ class SkeletonCard extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: const Color(0xFFEAECEF),
+        color: AppColors.borderDefault,
         borderRadius: BorderRadius.circular(radius),
       ),
     );

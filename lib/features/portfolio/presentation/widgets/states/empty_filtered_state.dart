@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fe_assessment_earnex/features/portfolio/presentation/portfolio_providers.dart';
+import 'package:fe_assessment_earnex/theme/tokens.dart';
 
 /// Shown when the traders list loaded successfully but the applied filter
 /// excluded every trader.
@@ -16,31 +17,27 @@ class EmptyFilteredState extends ConsumerWidget {
           const Icon(
             Icons.filter_alt_off_outlined,
             size: 48,
-            color: Color(0xFF707A8A),
+            color: AppColors.iconSecondary,
           ),
           const SizedBox(height: 12),
-          const Text(
+          Text(
             'No traders match your filter',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF1E2329),
-            ),
+            style: AppText.semiBold16.copyWith(color: AppColors.textPrimary),
           ),
           const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () => ref.read(appliedFilterProvider.notifier).clear(),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFF0B90B),
-              foregroundColor: const Color(0xFF1E2329),
+              backgroundColor: AppColors.bgBrand,
+              foregroundColor: AppColors.textPrimary,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppRadius.md),
               ),
               elevation: 0,
             ),
             child: const Text(
               'Clear filter',
-              style: TextStyle(fontWeight: FontWeight.w600),
+              style: AppText.semiBold14,
             ),
           ),
         ],
