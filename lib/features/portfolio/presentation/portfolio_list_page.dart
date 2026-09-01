@@ -18,7 +18,7 @@ class PortfolioListPage extends ConsumerWidget {
     return const Scaffold(
       backgroundColor: AppColors.bgPrimary,
       body: SafeArea(
-        bottom: false,
+        bottom: true,
         child: Column(
           children: [
             HeaderSection(),

@@ -24,34 +24,37 @@ class FilterBottomSheet extends ConsumerWidget {
 
     return SizedBox(
       height: media.size.height * _heightFactor,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const _SheetHeader(),
-          Expanded(
-            child: Container(
-              color: AppColors.bgPrimary,
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.x16,
-                ),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _Section(label: 'Tags', child: TagChipGroup()),
-                    SizedBox(height: AppSpacing.x16),
-                    _Section(label: '30D PnL', child: _PnlRange()),
-                    SizedBox(height: AppSpacing.x16),
-                    _Section(label: '7D ROI', child: _RoiChips()),
-                    SizedBox(height: AppSpacing.x16),
-                    _ApiToggleRow(),
-                  ],
+      child: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const _SheetHeader(),
+            Expanded(
+              child: Container(
+                color: AppColors.bgPrimary,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.x16,
+                  ),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _Section(label: 'Tags', child: TagChipGroup()),
+                      SizedBox(height: AppSpacing.x16),
+                      _Section(label: '30D PnL', child: _PnlRange()),
+                      SizedBox(height: AppSpacing.x16),
+                      _Section(label: '7D ROI', child: _RoiChips()),
+                      SizedBox(height: AppSpacing.x16),
+                      _ApiToggleRow(),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          _SheetFooter(bottomInset: media.viewPadding.bottom),
-        ],
+            _SheetFooter(bottomInset: media.viewPadding.bottom),
+          ],
+        ),
       ),
     );
   }
@@ -275,7 +278,7 @@ class _SheetFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     // Figma reserves 60pt below the buttons; on a device with a home
     // indicator part of that is already the system inset.
-    final bottom = math.max(60 - bottomInset, AppSpacing.x16);
+    // final bottom = math.max(60 - bottomInset, AppSpacing.x16);
 
     return Container(
       width: double.infinity,
@@ -284,7 +287,7 @@ class _SheetFooter extends StatelessWidget {
         AppSpacing.x16,
         AppSpacing.x16,
         AppSpacing.x16,
-        bottom,
+        AppSpacing.x16,
       ),
       child: const SheetActions(),
     );
