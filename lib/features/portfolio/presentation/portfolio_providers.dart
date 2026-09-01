@@ -48,6 +48,24 @@ class DraftFilterNotifier extends AutoDisposeNotifier<FilterState> {
     state = state.copyWith(tags: currentTags);
   }
 
+  void setPnlRange(double min, double max) {
+    state = state.copyWith(pnlMin: min, pnlMax: max);
+  }
+
+  void setRoiThreshold(double? threshold) {
+    state = FilterState(
+      tags: state.tags,
+      pnlMin: state.pnlMin,
+      pnlMax: state.pnlMax,
+      roiThreshold: threshold,
+      apiOnly: state.apiOnly,
+    );
+  }
+
+  void setApiOnly(bool value) {
+    state = state.copyWith(apiOnly: value);
+  }
+
   void reset() {
     state = const FilterState();
   }
