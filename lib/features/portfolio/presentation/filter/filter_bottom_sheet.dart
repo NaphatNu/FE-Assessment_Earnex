@@ -6,15 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fe_assessment_earnex/features/portfolio/presentation/filter/sheet_actions.dart';
 import 'package:fe_assessment_earnex/features/portfolio/presentation/filter/tag_chip.dart';
 import 'package:fe_assessment_earnex/features/portfolio/presentation/filter/tag_chip_group.dart';
+import 'package:fe_assessment_earnex/features/portfolio/presentation/portfolio_providers.dart';
 import 'package:fe_assessment_earnex/theme/tokens.dart';
 
 /// The "Advanced Filters" sheet.
 ///
-/// Mirrors Figma `UI 1 / Frame 23` (node 22:7051). **Tags** is wired to
-/// `draftFilterProvider`, per the brief. The PnL range, ROI chips, and API
-/// switch are interactive (draggable/typable/tappable) but keep their own
-/// local widget state rather than feeding a provider. The sheet takes zero
-/// filter data through its constructor — hence `const`.
+/// Mirrors Figma `UI 1 / Frame 23` (node 22:7051). Every control is wired to
+/// `draftFilterProvider`, so Reset and Confirm both act on real draft state.
+/// The sheet takes zero filter data through its constructor — hence `const`.
 class FilterBottomSheet extends ConsumerWidget {
   const FilterBottomSheet({super.key});
 
@@ -130,25 +129,21 @@ class _Section extends StatelessWidget {
 }
 
 /// The two editable amount fields and the draggable range slider beneath
-/// them. Interactive, but keeps its own local state — see the class doc on
-/// [FilterBottomSheet] for why it isn't wired to a provider.
-class _PnlRange extends StatefulWidget {
+/// them, backed by `draftFilterProvider` so Reset clears them too.
+class _PnlRange extends ConsumerStatefulWidget {
   const _PnlRange();
 
   @override
-  State<_PnlRange> createState() => _PnlRangeState();
+  ConsumerState<_PnlRange> createState() => _PnlRangeState();
 }
 
-class _PnlRangeState extends State<_PnlRange> {
+class _PnlRangeState extends ConsumerState<_PnlRange> {
   static const double _min = 0;
   static const double _max = 500000;
   static const double _handleSize = 16;
 
-  double _lower = _min;
-  double _upper = _max;
-
-  late final _lowerCtrl = TextEditingController(text: _format(_lower));
-  late final _upperCtrl = TextEditingController(text: _format(_upper));
+  late final _lowerCtrl = TextEditingController();
+  late final _upperCtrl = TextEditingController();
 
   static String _format(double v) => v.round().toString();
 
@@ -159,24 +154,33 @@ class _PnlRangeState extends State<_PnlRange> {
     super.dispose();
   }
 
-  void _commitLower(String text) {
+  void _commitLower(String text, double upper) {
     final parsed = double.tryParse(text);
-    setState(() {
-      _lower = parsed == null ? _lower : parsed.clamp(_min, _upper);
-      _lowerCtrl.text = _format(_lower);
-    });
+    final lower = parsed == null
+        ? ref.read(draftFilterProvider).pnlMin
+        : parsed.clamp(_min, upper);
+    ref.read(draftFilterProvider.notifier).setPnlRange(lower, upper);
   }
 
-  void _commitUpper(String text) {
+  void _commitUpper(String text, double lower) {
     final parsed = double.tryParse(text);
-    setState(() {
-      _upper = parsed == null ? _upper : parsed.clamp(_lower, _max);
-      _upperCtrl.text = _format(_upper);
-    });
+    final upper = parsed == null
+        ? ref.read(draftFilterProvider).pnlMax
+        : parsed.clamp(lower, _max);
+    ref.read(draftFilterProvider.notifier).setPnlRange(lower, upper);
   }
 
   @override
   Widget build(BuildContext context) {
+    final draft = ref.watch(draftFilterProvider);
+    final lower = draft.pnlMin;
+    final upper = draft.pnlMax;
+
+    final lowerText = _format(lower);
+    final upperText = _format(upper);
+    if (_lowerCtrl.text != lowerText) _lowerCtrl.text = lowerText;
+    if (_upperCtrl.text != upperText) _upperCtrl.text = upperText;
+
     return Column(
       children: [
         Row(
@@ -184,7 +188,7 @@ class _PnlRangeState extends State<_PnlRange> {
             Expanded(
               child: _AmountField(
                 controller: _lowerCtrl,
-                onSubmitted: _commitLower,
+                onSubmitted: (text) => _commitLower(text, upper),
               ),
             ),
             const SizedBox(width: AppSpacing.x4),
@@ -193,7 +197,7 @@ class _PnlRangeState extends State<_PnlRange> {
             Expanded(
               child: _AmountField(
                 controller: _upperCtrl,
-                onSubmitted: _commitUpper,
+                onSubmitted: (text) => _commitUpper(text, lower),
               ),
             ),
           ],
@@ -204,23 +208,23 @@ class _PnlRangeState extends State<_PnlRange> {
           child: LayoutBuilder(
             builder: (context, constraints) {
               final trackWidth = constraints.maxWidth - _handleSize;
-              final lowerX = (_lower / _max) * trackWidth;
-              final upperX = (_upper / _max) * trackWidth;
+              final lowerX = (lower / _max) * trackWidth;
+              final upperX = (upper / _max) * trackWidth;
 
               void dragLower(double dx) {
-                setState(() {
-                  final frac = ((lowerX + dx) / trackWidth).clamp(0.0, 1.0);
-                  _lower = (frac * _max).clamp(_min, _upper);
-                  _lowerCtrl.text = _format(_lower);
-                });
+                final frac = ((lowerX + dx) / trackWidth).clamp(0.0, 1.0);
+                final newLower = (frac * _max).clamp(_min, upper);
+                ref
+                    .read(draftFilterProvider.notifier)
+                    .setPnlRange(newLower, upper);
               }
 
               void dragUpper(double dx) {
-                setState(() {
-                  final frac = ((upperX + dx) / trackWidth).clamp(0.0, 1.0);
-                  _upper = (frac * _max).clamp(_lower, _max);
-                  _upperCtrl.text = _format(_upper);
-                });
+                final frac = ((upperX + dx) / trackWidth).clamp(0.0, 1.0);
+                final newUpper = (frac * _max).clamp(lower, _max);
+                ref
+                    .read(draftFilterProvider.notifier)
+                    .setPnlRange(lower, newUpper);
               }
 
               return Stack(
@@ -343,51 +347,42 @@ class _SliderHandle extends StatelessWidget {
   }
 }
 
-/// Four ROI threshold chips, single-select (tap again to clear). Keeps its
-/// own local state — see the class doc on [FilterBottomSheet].
-class _RoiChips extends StatefulWidget {
+/// Four ROI threshold chips, single-select (tap again to clear), backed by
+/// `draftFilterProvider` so Reset clears the selection too.
+class _RoiChips extends ConsumerWidget {
   const _RoiChips();
 
-  @override
-  State<_RoiChips> createState() => _RoiChipsState();
-}
-
-class _RoiChipsState extends State<_RoiChips> {
+  static const _thresholds = [0.0, 25.0, 50.0, 100.0];
   static const _labels = ['≥0%', '≥25%', '≥50%', '≥100%'];
 
-  int? _selected;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selected = ref.watch(draftFilterProvider).roiThreshold;
+
     return ChipGrid(
       chips: [
         for (var i = 0; i < _labels.length; i++)
           TagChip(
             label: _labels[i],
-            selected: _selected == i,
-            onTap: () => setState(() {
-              _selected = _selected == i ? null : i;
-            }),
+            selected: selected == _thresholds[i],
+            onTap: () => ref.read(draftFilterProvider.notifier).setRoiThreshold(
+                  selected == _thresholds[i] ? null : _thresholds[i],
+                ),
           ),
       ],
     );
   }
 }
 
-/// The API row with an iOS-style switch, grey when off and green when on.
-/// Keeps its own local state — see the class doc on [FilterBottomSheet].
-class _ApiToggleRow extends StatefulWidget {
+/// The API row with an iOS-style switch, grey when off and green when on,
+/// backed by `draftFilterProvider` so Reset turns it off too.
+class _ApiToggleRow extends ConsumerWidget {
   const _ApiToggleRow();
 
   @override
-  State<_ApiToggleRow> createState() => _ApiToggleRowState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final enabled = ref.watch(draftFilterProvider).apiOnly;
 
-class _ApiToggleRowState extends State<_ApiToggleRow> {
-  bool _enabled = false;
-
-  @override
-  Widget build(BuildContext context) {
     return SizedBox(
       height: 50,
       child: Row(
@@ -399,17 +394,17 @@ class _ApiToggleRowState extends State<_ApiToggleRow> {
           ),
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () => setState(() => _enabled = !_enabled),
+            onTap: () =>
+                ref.read(draftFilterProvider.notifier).setApiOnly(!enabled),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 150),
               curve: Curves.easeInOut,
               width: 64,
               height: 28,
               padding: const EdgeInsets.all(2),
-              alignment:
-                  _enabled ? Alignment.centerRight : Alignment.centerLeft,
+              alignment: enabled ? Alignment.centerRight : Alignment.centerLeft,
               decoration: BoxDecoration(
-                color: _enabled ? AppColors.green500 : const Color(0x4D3C3C43),
+                color: enabled ? AppColors.green500 : const Color(0x4D3C3C43),
                 borderRadius: BorderRadius.circular(100),
               ),
               child: Container(
