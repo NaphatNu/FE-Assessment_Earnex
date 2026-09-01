@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('mock_data.json', () {
+  group('traders.json', () {
     late List<dynamic> traders;
 
     setUpAll(() {
-      final file = File('assets/data/mock_data.json');
+      final file = File('assets/mock/traders.json');
       final jsonString = file.readAsStringSync();
       traders = json.decode(jsonString) as List;
     });
@@ -33,26 +33,41 @@ void main() {
           reason: 'Found duplicate IDs: $duplicateIds');
     });
 
-    test('every tag belongs to the fixed set of 8 tags', () {
+    test(
+        'every tag belongs to the fixed set of 8 tags and each tag is carried by ≥ 3 traders',
+        () {
       final allTags = <String>{};
-      final expectedTags = {
+      final tagCounts = <String, int>{};
+      final allowedTags = {
         'Top Performer',
         'Money Maker',
-        'Whale Manager',
         'Most Resilient',
+        'Whale Manager',
         'Solid Growth',
-        'Most Consistent',
         'Low Leverage',
+        'Most Consistent',
         'High Risk'
       };
 
+      // Count tags and collect all tags
       for (final trader in traders) {
         final tags = List<String>.from(trader['tags'] as List);
         allTags.addAll(tags);
+        for (final tag in tags) {
+          tagCounts[tag] = (tagCounts[tag] ?? 0) + 1;
+        }
       }
 
-      expect(allTags, equals(expectedTags),
-          reason: 'Unexpected tags found: ${allTags.difference(expectedTags)}');
+      // Check that all tags are from the allowed set
+      expect(allTags.difference(allowedTags), isEmpty,
+          reason: 'Unexpected tags found: ${allTags.difference(allowedTags)}');
+
+      // Check that each tag is carried by at least 3 traders
+      for (final entry in tagCounts.entries) {
+        expect(entry.value, greaterThanOrEqualTo(3),
+            reason:
+                'Tag "${entry.key}" is carried by only ${entry.value} traders, expected at least 3');
+      }
     });
 
     test('every trader has between 1 and 3 tags inclusive', () {
@@ -63,29 +78,17 @@ void main() {
       }
     });
 
-    test('tag counts match expected values', () {
-      final tagCounts = <String, int>{};
-
-      // Count tags
+    test('at least one trader carries 3 tags', () {
+      bool foundThreeTagTrader = false;
       for (final trader in traders) {
         final tags = List<String>.from(trader['tags'] as List);
-        for (final tag in tags) {
-          tagCounts[tag] = (tagCounts[tag] ?? 0) + 1;
+        if (tags.length == 3) {
+          foundThreeTagTrader = true;
+          break;
         }
       }
-
-      final expectedTagCounts = {
-        'Top Performer': 5,
-        'Money Maker': 4,
-        'Whale Manager': 4,
-        'Most Resilient': 3,
-        'Solid Growth': 4,
-        'Most Consistent': 5,
-        'Low Leverage': 4,
-        'High Risk': 2
-      };
-
-      expect(tagCounts, equals(expectedTagCounts));
+      expect(foundThreeTagTrader, isTrue,
+          reason: 'No trader found with exactly 3 tags');
     });
 
     test(

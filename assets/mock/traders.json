@@ -3,301 +3,302 @@
         "id": "t001",
         "name": "CRYPTO 加密",
         "avatarUrl": "https://i.pravatar.cc/150?img=1",
-        "copierCount": 0,
-        "copierLimit": 300,
-        "isAPI": true,
+        "copiers": 0,
+        "copiersMax": 300,
+        "isApi": true,
         "tags": [
             "Top Performer",
             "Money Maker"
         ],
         "pnl30d": 56592.5,
-        "roi30d": 17.07,
+        "roi": 17.07,
         "aum": 388038.47,
         "mdd30d": 2.54,
-        "sharpeRatio": 2.15
+        "sharpe": 2.15
     },
     {
         "id": "t002",
         "name": "師429",
         "avatarUrl": "https://i.pravatar.cc/150?img=2",
-        "copierCount": 300,
-        "copierLimit": 300,
-        "isAPI": false,
+        "copiers": 300,
+        "copiersMax": 300,
+        "isApi": false,
         "tags": [
-            "Whale Manager"
+            "Whale Manager",
+            "High Risk"
         ],
         "pnl30d": 53247.32,
-        "roi30d": 5.32,
+        "roi": 5.32,
         "aum": 1121849.62,
         "mdd30d": 6.97,
-        "sharpeRatio": 0.85
+        "sharpe": 0.85
     },
     {
         "id": "t003",
         "name": "Alpha Wolf",
         "avatarUrl": "https://i.pravatar.cc/150?img=3",
-        "copierCount": 145,
-        "copierLimit": 200,
-        "isAPI": true,
+        "copiers": 145,
+        "copiersMax": 200,
+        "isApi": true,
         "tags": [
             "Most Resilient",
             "Solid Growth"
         ],
         "pnl30d": 23000.0,
-        "roi30d": 9.8,
+        "roi": 9.8,
         "aum": 210000.0,
         "mdd30d": 3.1,
-        "sharpeRatio": 1.72
+        "sharpe": 1.72
     },
     {
         "id": "t004",
         "name": "GoldenBull",
         "avatarUrl": "https://i.pravatar.cc/150?img=4",
-        "copierCount": 88,
-        "copierLimit": 150,
-        "isAPI": false,
+        "copiers": 88,
+        "copiersMax": 150,
+        "isApi": false,
         "tags": [
             "Money Maker",
             "Most Consistent"
         ],
         "pnl30d": 71500.0,
-        "roi30d": 22.4,
+        "roi": 22.4,
         "aum": 315000.0,
         "mdd30d": 4.8,
-        "sharpeRatio": 2.05
+        "sharpe": 2.05
     },
     {
         "id": "t005",
         "name": "SafeHands FX",
         "avatarUrl": "https://i.pravatar.cc/150?img=5",
-        "copierCount": 12,
-        "copierLimit": 100,
-        "isAPI": false,
+        "copiers": 12,
+        "copiersMax": 100,
+        "isApi": false,
         "tags": [
             "Low Leverage"
         ],
         "pnl30d": 4200.0,
-        "roi30d": 1.9,
+        "roi": 1.9,
         "aum": 45000.0,
         "mdd30d": 0.8,
-        "sharpeRatio": 1.1
+        "sharpe": 1.1
     },
     {
         "id": "t006",
         "name": "Whale King",
         "avatarUrl": "https://i.pravatar.cc/150?img=6",
-        "copierCount": 500,
-        "copierLimit": 500,
-        "isAPI": true,
+        "copiers": 500,
+        "copiersMax": 500,
+        "isApi": true,
         "tags": [
             "Whale Manager",
             "Top Performer"
         ],
         "pnl30d": 189000.0,
-        "roi30d": 14.2,
+        "roi": 14.2,
         "aum": 2450000.0,
         "mdd30d": 5.6,
-        "sharpeRatio": 1.95
+        "sharpe": 1.95
     },
     {
         "id": "t007",
         "name": "Rookie Star",
         "avatarUrl": "https://i.pravatar.cc/150?img=7",
-        "copierCount": 3,
-        "copierLimit": 50,
-        "isAPI": false,
+        "copiers": 3,
+        "copiersMax": 50,
+        "isApi": false,
         "tags": [
             "Most Consistent"
         ],
         "pnl30d": 1200.0,
-        "roi30d": 3.5,
+        "roi": 3.5,
         "aum": 8000.0,
         "mdd30d": 1.2,
-        "sharpeRatio": 0.65
+        "sharpe": 0.65
     },
     {
         "id": "t008",
         "name": "Grid Master",
         "avatarUrl": "https://i.pravatar.cc/150?img=8",
-        "copierCount": 220,
-        "copierLimit": 250,
-        "isAPI": true,
+        "copiers": 220,
+        "copiersMax": 250,
+        "isApi": true,
         "tags": [
             "Solid Growth",
             "Most Resilient"
         ],
         "pnl30d": 34500.0,
-        "roi30d": 11.3,
+        "roi": 11.3,
         "aum": 180000.0,
         "mdd30d": 2.9,
-        "sharpeRatio": 1.88
+        "sharpe": 1.88
     },
     {
         "id": "t009",
         "name": "ShadowTrader",
         "avatarUrl": "https://i.pravatar.cc/150?img=9",
-        "copierCount": 60,
-        "copierLimit": 100,
-        "isAPI": false,
+        "copiers": 60,
+        "copiersMax": 100,
+        "isApi": false,
         "tags": [
             "High Risk"
         ],
         "pnl30d": -8400.0,
-        "roi30d": -4.2,
+        "roi": -4.2,
         "aum": 95000.0,
         "mdd30d": 18.5,
-        "sharpeRatio": -0.45
+        "sharpe": -0.45
     },
     {
         "id": "t010",
         "name": "Moon Chaser",
         "avatarUrl": "https://i.pravatar.cc/150?img=10",
-        "copierCount": 175,
-        "copierLimit": 175,
-        "isAPI": true,
+        "copiers": 175,
+        "copiersMax": 175,
+        "isApi": true,
         "tags": [
             "Top Performer",
             "Most Consistent"
         ],
         "pnl30d": 98700.0,
-        "roi30d": 28.6,
+        "roi": 28.6,
         "aum": 340000.0,
         "mdd30d": 7.2,
-        "sharpeRatio": 2.4
+        "sharpe": 2.4
     },
     {
         "id": "t011",
         "name": "Slow & Steady",
         "avatarUrl": "https://i.pravatar.cc/150?img=11",
-        "copierCount": 34,
-        "copierLimit": 80,
-        "isAPI": false,
+        "copiers": 34,
+        "copiersMax": 80,
+        "isApi": false,
         "tags": [
             "Low Leverage",
             "Most Consistent"
         ],
         "pnl30d": 3100.0,
-        "roi30d": 2.1,
+        "roi": 2.1,
         "aum": 62000.0,
         "mdd30d": 0.5,
-        "sharpeRatio": 1.35
+        "sharpe": 1.35
     },
     {
         "id": "t012",
         "name": "FX Sniper",
         "avatarUrl": "https://i.pravatar.cc/150?img=12",
-        "copierCount": 99,
-        "copierLimit": 120,
-        "isAPI": true,
+        "copiers": 99,
+        "copiersMax": 120,
+        "isApi": true,
         "tags": [
             "Money Maker"
         ],
         "pnl30d": 47200.0,
-        "roi30d": 16.5,
+        "roi": 16.5,
         "aum": 260000.0,
         "mdd30d": 4.1,
-        "sharpeRatio": 1.6
+        "sharpe": 1.6
     },
     {
         "id": "t013",
         "name": "Iron Portfolio",
         "avatarUrl": "https://i.pravatar.cc/150?img=13",
-        "copierCount": 400,
-        "copierLimit": 400,
-        "isAPI": false,
+        "copiers": 400,
+        "copiersMax": 400,
+        "isApi": false,
         "tags": [
             "Whale Manager",
             "Most Resilient"
         ],
         "pnl30d": 152000.0,
-        "roi30d": 10.8,
+        "roi": 10.8,
         "aum": 1800000.0,
         "mdd30d": 3.9,
-        "sharpeRatio": 1.78
+        "sharpe": 1.78
     },
     {
         "id": "t014",
         "name": "Quiet Compounder",
         "avatarUrl": "https://i.pravatar.cc/150?img=14",
-        "copierCount": 27,
-        "copierLimit": 60,
-        "isAPI": false,
+        "copiers": 27,
+        "copiersMax": 60,
+        "isApi": false,
         "tags": [
             "Solid Growth",
             "Low Leverage"
         ],
         "pnl30d": 6800.0,
-        "roi30d": 4.6,
+        "roi": 4.6,
         "aum": 71000.0,
         "mdd30d": 1.5,
-        "sharpeRatio": 1.42
+        "sharpe": 1.42
     },
     {
         "id": "t015",
         "name": "Degen Dave",
         "avatarUrl": "https://i.pravatar.cc/150?img=15",
-        "copierCount": 8,
-        "copierLimit": 30,
-        "isAPI": true,
+        "copiers": 8,
+        "copiersMax": 30,
+        "isApi": true,
         "tags": [
             "High Risk"
         ],
         "pnl30d": -15200.0,
-        "roi30d": -9.1,
+        "roi": -9.1,
         "aum": 48000.0,
         "mdd30d": 24.3,
-        "sharpeRatio": -0.92
+        "sharpe": -0.92
     },
     {
         "id": "t016",
         "name": "Trend Rider",
         "avatarUrl": "https://i.pravatar.cc/150?img=16",
-        "copierCount": 130,
-        "copierLimit": 150,
-        "isAPI": true,
+        "copiers": 130,
+        "copiersMax": 150,
+        "isApi": true,
         "tags": [
             "Top Performer",
             "Solid Growth"
         ],
         "pnl30d": 64300.0,
-        "roi30d": 19.5,
+        "roi": 19.5,
         "aum": 225000.0,
         "mdd30d": 5.0,
-        "sharpeRatio": 1.99
+        "sharpe": 1.99
     },
     {
         "id": "t017",
         "name": "Patient Panda",
         "avatarUrl": "https://i.pravatar.cc/150?img=17",
-        "copierCount": 45,
-        "copierLimit": 90,
-        "isAPI": false,
+        "copiers": 45,
+        "copiersMax": 90,
+        "isApi": false,
         "tags": [
             "Most Consistent",
             "Low Leverage"
         ],
         "pnl30d": 2900.0,
-        "roi30d": 1.4,
+        "roi": 1.4,
         "aum": 55000.0,
         "mdd30d": 0.9,
-        "sharpeRatio": 1.05
+        "sharpe": 1.05
     },
     {
         "id": "t018",
         "name": "Zenith Capital",
         "avatarUrl": "https://i.pravatar.cc/150?img=18",
-        "copierCount": 260,
-        "copierLimit": 300,
-        "isAPI": true,
+        "copiers": 260,
+        "copiersMax": 300,
+        "isApi": true,
         "tags": [
             "Whale Manager",
             "Money Maker",
             "Top Performer"
         ],
         "pnl30d": 210500.0,
-        "roi30d": 31.2,
+        "roi": 31.2,
         "aum": 980000.0,
         "mdd30d": 8.4,
-        "sharpeRatio": 2.55
+        "sharpe": 2.55
     }
 ]

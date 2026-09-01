@@ -59,7 +59,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/data/mock_data.json
+    - assets/mock/traders.json
     - assets/icons/
 
   fonts:

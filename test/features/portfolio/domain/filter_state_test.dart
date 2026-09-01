@@ -10,15 +10,15 @@ void main() {
         id: '1',
         name: 'Test Trader',
         avatarUrl: 'https://example.com/avatar.jpg',
-        copierCount: 0,
-        copierLimit: 100,
-        isAPI: true,
+        copiers: 0,
+        copiersMax: 100,
+        isApi: true,
         tags: ['Top Performer'],
         pnl30d: 1000.0,
-        roi30d: 5.0,
+        roi: 5.0,
         aum: 10000.0,
         mdd30d: 1.0,
-        sharpeRatio: 1.5,
+        sharpe: 1.5,
       );
 
       expect(filter.matches(trader), isTrue);
@@ -30,15 +30,15 @@ void main() {
         id: '1',
         name: 'Test Trader',
         avatarUrl: 'https://example.com/avatar.jpg',
-        copierCount: 0,
-        copierLimit: 100,
-        isAPI: true,
+        copiers: 0,
+        copiersMax: 100,
+        isApi: true,
         tags: ['Top Performer'],
         pnl30d: 1000.0,
-        roi30d: 5.0,
+        roi: 5.0,
         aum: 10000.0,
         mdd30d: 1.0,
-        sharpeRatio: 1.5,
+        sharpe: 1.5,
       );
 
       expect(filter.matches(trader), isTrue);
@@ -50,15 +50,15 @@ void main() {
         id: '1',
         name: 'Test Trader',
         avatarUrl: 'https://example.com/avatar.jpg',
-        copierCount: 0,
-        copierLimit: 100,
-        isAPI: true,
+        copiers: 0,
+        copiersMax: 100,
+        isApi: true,
         tags: ['High Risk'],
         pnl30d: 1000.0,
-        roi30d: 5.0,
+        roi: 5.0,
         aum: 10000.0,
         mdd30d: 1.0,
-        sharpeRatio: 1.5,
+        sharpe: 1.5,
       );
 
       expect(filter.matches(trader), isFalse);

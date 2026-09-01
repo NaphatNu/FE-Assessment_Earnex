@@ -24,15 +24,15 @@ Trader _trader(String id, List<String> tags) => Trader(
       id: id,
       name: 'Trader $id',
       avatarUrl: 'https://example.com/$id.jpg',
-      copierCount: 0,
-      copierLimit: 100,
-      isAPI: false,
+      copiers: 0,
+      copiersMax: 100,
+      isApi: false,
       tags: tags,
       pnl30d: 100.0,
-      roi30d: 5.0,
+      roi: 5.0,
       aum: 1000.0,
       mdd30d: 1.0,
-      sharpeRatio: 1.0,
+      sharpe: 1.0,
     );
 
 Widget _appWith(ProviderContainer container) {

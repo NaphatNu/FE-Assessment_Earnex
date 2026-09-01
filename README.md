@@ -14,7 +14,7 @@ flutter test           # run the test suite
 
 ## Architecture
 
-Data flows one way, down: a local JSON asset (`assets/data/mock_data.json`) is
+Data flows one way, down: a local JSON asset (`assets/mock/traders.json`) is
 read by `AssetTradersRepository` behind the `TradersRepository` interface,
 loaded once by `tradersProvider`, combined with the active filter in
 `filteredTradersProvider`, and rendered by `TraderList`. Writes flow the other
