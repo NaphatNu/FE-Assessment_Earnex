@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fe_assessment_earnex/src/ui/portfolio_list_page.dart';
-import 'package:fe_assessment_earnex/src/ui/theme/tokens.dart';
+import 'package:fe_assessment_earnex/features/portfolio/presentation/portfolio_list_page.dart';
+import 'package:fe_assessment_earnex/theme/tokens.dart';
 
 void main() {
   runApp(
