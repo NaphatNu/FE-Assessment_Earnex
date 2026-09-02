@@ -71,5 +71,26 @@ void main() {
       expect(container.read(appliedFilterProvider).tags,
           equals({'Top Performer'}));
     });
+
+    test('reset clears every control, not just the tags', () {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      final draftNotifier = container.read(draftFilterProvider.notifier);
+
+      // Touch all four dimensions the sheet can write to.
+      draftNotifier.toggleTag('Money Maker');
+      draftNotifier.setPnlRange(1000, 2000);
+      draftNotifier.setRoiThreshold(50);
+      draftNotifier.setApiOnly(true);
+
+      expect(container.read(draftFilterProvider), isNot(const FilterState()));
+
+      draftNotifier.reset();
+
+      // Reset is the single path back to the default, so it has to clear the
+      // PnL range, the ROI threshold and the API toggle as well as the tags.
+      expect(container.read(draftFilterProvider), equals(const FilterState()));
+    });
   });
 }

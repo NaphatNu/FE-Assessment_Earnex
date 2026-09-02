@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,8 +9,10 @@ import 'package:fe_assessment_earnex/theme/tokens.dart';
 
 /// The "Advanced Filters" sheet.
 ///
-/// Mirrors Figma `UI 1 / Frame 23` (node 22:7051). Every control is wired to
-/// `draftFilterProvider`, so Reset and Confirm both act on real draft state.
+/// Mirrors Figma `UI 1 / Frame 23` (node 22:7051). Every control writes to
+/// `draftFilterProvider`, so Reset clears all of them. Only `tags` is read by
+/// `FilterState.matches`, so the PnL range, the ROI threshold and the API
+/// toggle reach `appliedFilterProvider` on Confirm without narrowing the list.
 /// The sheet takes zero filter data through its constructor — hence `const`.
 class FilterBottomSheet extends ConsumerWidget {
   const FilterBottomSheet({super.key});
@@ -54,7 +54,7 @@ class FilterBottomSheet extends ConsumerWidget {
                 ),
               ),
             ),
-            _SheetFooter(bottomInset: media.viewPadding.bottom),
+            const _SheetFooter(),
           ],
         ),
       ),
@@ -424,20 +424,17 @@ class _ApiToggleRow extends ConsumerWidget {
 }
 
 class _SheetFooter extends StatelessWidget {
-  const _SheetFooter({required this.bottomInset});
-
-  final double bottomInset;
+  const _SheetFooter();
 
   @override
   Widget build(BuildContext context) {
-    // Figma reserves 60pt below the buttons; on a device with a home
-    // indicator part of that is already the system inset.
-    // final bottom = math.max(60 - bottomInset, AppSpacing.x16);
-
+    // Figma reserves 60pt below the buttons for the home indicator; the
+    // sheet's own `SafeArea(top: false)` already pads that, so what is left
+    // here is a plain 16pt inset.
     return Container(
       width: double.infinity,
       color: AppColors.bgPrimary,
-      padding: EdgeInsets.fromLTRB(
+      padding: const EdgeInsets.fromLTRB(
         AppSpacing.x16,
         AppSpacing.x16,
         AppSpacing.x16,

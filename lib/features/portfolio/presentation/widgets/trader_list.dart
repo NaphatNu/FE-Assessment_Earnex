@@ -20,7 +20,9 @@ class TraderList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tradersAsync = ref.watch(filteredTradersProvider);
-    final isFilterEmpty = ref.watch(appliedFilterProvider).isEmpty;
+    // Only `tags` reaches `FilterState.matches`, so only `tags` can be the
+    // reason the list came back empty.
+    final isFilterEmpty = ref.watch(appliedFilterProvider).tags.isEmpty;
 
     return tradersAsync.when(
       loading: () => ListView.separated(
